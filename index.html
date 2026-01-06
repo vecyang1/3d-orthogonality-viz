@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>正交性 3D 互动 | Orthogonality Visualization</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div id="app">
+      <div class="overlay">
+        <div class="glass-panel">
+          <h1>波的正交性 3D 演示</h1>
+          <p>
+            将正弦波视为空间中的坐标轴。在这个 3D 视角中，Z 轴代表时间，X 和 Y 轴分别代表两个频率。
+          </p>
+          
+          <div class="controls">
+            <div class="control-group">
+              <div class="label-row">
+                <span>频率 1 (f1)</span>
+                <span id="f1-val">2 Hz</span>
+              </div>
+              <input type="range" id="f1-range" min="1" max="10" step="1" value="2">
+            </div>
+
+            <div class="control-group">
+              <div class="label-row">
+                <span>频率 2 (f2)</span>
+                <span id="f2-val">3 Hz</span>
+              </div>
+              <input type="range" id="f2-range" min="1" max="10" step="1" value="3">
+            </div>
+
+            <div class="control-group">
+              <div class="label-row">
+                <span>混合波形透明度</span>
+              </div>
+              <input type="range" id="opacity-range" min="0" max="1" step="0.1" value="0.8">
+            </div>
+          </div>
+
+          <div class="math-note" id="ortho-check">
+            ∫ sin(f1·t) · sin(f2·t) dt ≈ 0.00
+            <br>
+            当 f1 ≠ f2 时，它们是垂直的。
+          </div>
+        </div>
+      </div>
+
+      <div class="legend glass-panel">
+        <div class="legend-item"><div class="dot f1"></div> <span>2 Hz (X 轴投影)</span></div>
+        <div class="legend-item"><div class="dot f2"></div> <span>3 Hz (Y 轴投影)</span></div>
+        <div class="legend-item"><div class="dot sum"></div> <span>叠加合成 (3D 路径)</span></div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
