@@ -20,7 +20,35 @@
         <span class="subtitle">Orthogonality & Vector Projection Exp.</span>
 
         <div class="control-section">
+          <!-- Mode Selection -->
+          <div class="control-group">
+            <div class="group-title">基函数类型 (Basis Functions)</div>
+            <div class="preset-grid">
+              <button class="preset-btn active" id="mode-sine">Sine (5G)</button>
+              <button class="preset-btn" id="mode-square">Walsh</button>
+              <button class="preset-btn" id="mode-wave">Wavelet</button>
+              <button class="preset-btn" id="mode-poly">Poly (Math)</button>
+            </div>
+          </div>
+
           <!-- Frequency Controls -->
+          <!-- Amplitude Controls -->
+          <div class="control-item">
+            <div class="label-row">
+              <span>F1 Amplitude</span>
+              <span id="amp1-val">1.0</span>
+            </div>
+            <input type="range" id="amp1-range" min="0" max="2" step="0.1" value="1.0">
+          </div>
+
+          <div class="control-item">
+            <div class="label-row">
+              <span>F2 Amplitude</span>
+              <span id="amp2-val">1.0</span>
+            </div>
+            <input type="range" id="amp2-range" min="0" max="2" step="0.1" value="1.0">
+          </div>
+
           <div class="control-item">
             <div class="label-row">
               <span>Primary Osc (f1)</span>
@@ -51,7 +79,21 @@
               </button>
               <button class="scenario-btn magic" id="scene-iq">
                 <span class="icon">✨</span>
-                <span class="text">I/Q 正交<br><small>Quadrature (Phase 90°)</small></span>
+                <span class="text">I/Q 正交<br><small>Quadrature (5G/WiFi)</small></span>
+              </button>
+
+              <!-- Engineering Scenarios -->
+              <button class="scenario-btn engineering" id="scene-anc">
+                <span class="icon">🎧</span>
+                <span class="text">主动降噪<br><small>ANC (Anti-Phase)</small></span>
+              </button>
+              <button class="scenario-btn engineering" id="scene-beat">
+                <span class="icon">🎸</span>
+                <span class="text">拍频效应<br><small>Beats (Close Freq)</small></span>
+              </button>
+              <button class="scenario-btn engineering" id="scene-am">
+                <span class="icon">📻</span>
+                <span class="text">AM 调幅<br><small>Modulation</small></span>
               </button>
             </div>
           </div>
@@ -61,6 +103,7 @@
             <div class="group-title">相机视角 (Camera Views)</div>
             <div class="preset-grid">
               <button class="preset-btn active" id="view-3d">Free 3D</button>
+              <button class="preset-btn" id="view-comp">Composite</button>
               <button class="preset-btn" id="view-top">Top Plane</button>
               <button class="preset-btn" id="view-f1">F1 Iso</button>
               <button class="preset-btn" id="view-f2">F2 Iso</button>
@@ -68,56 +111,58 @@
               <button class="preset-btn" id="view-iso">Ortho</button>
             </div>
           </div>
-
-          <!-- Tutorial -->
-          <div class="tutorial-container">
-            <div id="tut-title">系统就绪</div>
-            <div id="tut-text">调节滑块观察频率在空间的垂直投影。</div>
-          </div>
-
-          <div class="control-item">
-            <div class="label-row">
-              <span>Phase Shift (φ)</span>
-              <span id="phase-val">0°</span>
-            </div>
-            <input type="range" id="phase-range" min="0" max="360" step="5" value="0">
-          </div>
-
-          <!-- Visibility Controls -->
-          <div class="control-item">
-            <div class="label-row" style="cursor: pointer;">
-              <span>显示合成信号 (3D Path)</span>
-              <input type="checkbox" id="show-sum" checked style="width: 20px; height: 20px;">
-            </div>
-          </div>
-
-          <!-- Audio Toggle -->
-          <button class="audio-btn" id="audio-toggle">
-            <span id="audio-icon">🔇</span>
-            <span id="audio-text">激活音频同步 (Audio On)</span>
-          </button>
         </div>
       </div>
-    </div>
 
-    <!-- Live Performance Stats -->
-    <div class="stats-bar">
-      <div class="stat-item">Correlation: <span id="stat-corr">0.000</span></div>
-      <div class="stat-item">Orthogonality: <span id="stat-ortho">99.9%</span></div>
-    </div>
+      <!-- Tutorial -->
+      <div class="tutorial-container">
+        <div id="tut-title">系统就绪</div>
+        <div id="tut-text">调节滑块观察频率在空间的垂直投影。</div>
+      </div>
 
-    <!-- Legend -->
-    <div class="legend-panel">
-      <div class="legend-item">
-        <div class="dot f1"></div> <span>f1 Component (X)</span>
+      <div class="control-item">
+        <div class="label-row">
+          <span>Phase Shift (φ)</span>
+          <span id="phase-val">0°</span>
+        </div>
+        <input type="range" id="phase-range" min="0" max="360" step="5" value="0">
       </div>
-      <div class="legend-item">
-        <div class="dot f2"></div> <span>f2 Component (Y)</span>
+
+      <!-- Visibility Controls -->
+      <div class="control-item">
+        <div class="label-row" style="cursor: pointer;">
+          <span>显示合成信号 (3D Path)</span>
+          <input type="checkbox" id="show-sum" checked style="width: 20px; height: 20px;">
+        </div>
       </div>
-      <div class="legend-item">
-        <div class="dot sum"></div> <span>Composite Signal</span>
-      </div>
+
+      <!-- Audio Toggle -->
+      <button class="audio-btn" id="audio-toggle">
+        <span id="audio-icon">🔇</span>
+        <span id="audio-text">激活音频同步 (Audio On)</span>
+      </button>
     </div>
+  </div>
+  </div>
+
+  <!-- Live Performance Stats -->
+  <div class="stats-bar">
+    <div class="stat-item">Correlation: <span id="stat-corr">0.000</span></div>
+    <div class="stat-item">Orthogonality: <span id="stat-ortho">99.9%</span></div>
+  </div>
+
+  <!-- Legend -->
+  <div class="legend-panel">
+    <div class="legend-item">
+      <div class="dot f1"></div> <span>f1 Component (X)</span>
+    </div>
+    <div class="legend-item">
+      <div class="dot f2"></div> <span>f2 Component (Y)</span>
+    </div>
+    <div class="legend-item">
+      <div class="dot sum"></div> <span>Composite Signal</span>
+    </div>
+  </div>
   </div>
   <script type="module" src="/src/main.js"></script>
 </body>
