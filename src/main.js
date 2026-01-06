@@ -42,8 +42,25 @@ scene.add(gridXZ);
 let f1 = 2;
 let f2 = 3;
 let opacity = 0.8;
+let speed = 0.5;
 const pointsCount = 1000;
 const length = 10;
+
+// --- Camera Targets ---
+const cameraTargets = {
+  default: { pos: new THREE.Vector3(5, 5, 8), target: new THREE.Vector3(0, 0, 0) },
+  f1: { pos: new THREE.Vector3(0, 0, 8), target: new THREE.Vector3(0, 0, 0) },
+  f2: { pos: new THREE.Vector3(8, 0, 0), target: new THREE.Vector3(0, 0, 0) }
+};
+
+let currentTarget = cameraTargets.default;
+
+function setCameraView(view) {
+  currentTarget = cameraTargets[view];
+  // Highlight active button
+  document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
+  document.getElementById(`view-${view === 'default' ? '3d' : view}`).classList.add('active');
+}
 
 // --- Objects ---
 function createLine(color) {
@@ -71,16 +88,14 @@ function updateCurves() {
   const positionsX = [];
   const positionsY = [];
   const positionsSum = [];
-  
+
   let integral = 0;
   const dt = length / pointsCount;
 
   for (let i = 0; i < pointsCount; i++) {
     const t = (i / pointsCount) * length - length / 2;
-    // Scale time for visualization
     const st = (i / pointsCount) * length;
-    
-    // x = sin(f1 * t), y = sin(f2 * t), z = t
+
     const xVal = Math.sin(2 * Math.PI * f1 * (st / length));
     const yVal = Math.sin(2 * Math.PI * f2 * (st / length));
     const zVal = st - length / 2;
@@ -89,17 +104,15 @@ function updateCurves() {
     positionsY.push(0, yVal, zVal);
     positionsSum.push(xVal, yVal, zVal);
 
-    // Orthogonality check (summing products)
     integral += xVal * yVal * dt;
   }
 
   lineX.geometry.setAttribute('position', new THREE.Float32BufferAttribute(positionsX, 3));
   lineY.geometry.setAttribute('position', new THREE.Float32BufferAttribute(positionsY, 3));
   lineSum.geometry.setAttribute('position', new THREE.Float32BufferAttribute(positionsSum, 3));
-  
+
   lineSum.material.opacity = opacity;
 
-  // Update UI
   document.getElementById('ortho-check').innerHTML = `
     ∫ sin(${f1}Hz) · sin(${f2}Hz) dt ≈ ${integral.toFixed(3)}
     <br>
@@ -120,19 +133,42 @@ document.getElementById('f2-range').addEventListener('input', (e) => {
   updateCurves();
 });
 
+document.getElementById('speed-range').addEventListener('input', (e) => {
+  speed = parseFloat(e.target.value);
+  document.getElementById('speed-val').innerText = `${speed.toFixed(1)}x`;
+});
+
 document.getElementById('opacity-range').addEventListener('input', (e) => {
   opacity = parseFloat(e.target.value);
   updateCurves();
 });
 
+document.getElementById('view-3d').addEventListener('click', () => setCameraView('default'));
+document.getElementById('view-f1').addEventListener('click', () => setCameraView('f1'));
+document.getElementById('view-f2').addEventListener('click', () => setCameraView('f2'));
+
 // --- Animation Loop ---
+let lastTime = 0;
+let progress = 0;
+
 function animate(time) {
   requestAnimationFrame(animate);
+  const deltaTime = time - lastTime;
+  lastTime = time;
+
   controls.update();
 
-  // Moving dot
-  const t = (time * 0.0005) % 1;
+  // Smooth camera transition
+  if (currentTarget) {
+    camera.position.lerp(currentTarget.pos, 0.05);
+    controls.target.lerp(currentTarget.target, 0.05);
+  }
+
+  // Progress logic based on speed
+  progress += (deltaTime * 0.001 * speed);
+  const t = progress % 1;
   const st = t * length;
+
   const xVal = Math.sin(2 * Math.PI * f1 * (st / length));
   const yVal = Math.sin(2 * Math.PI * f2 * (st / length));
   const zVal = st - length / 2;
@@ -143,6 +179,17 @@ function animate(time) {
 
   renderer.render(scene, camera);
 }
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// Initial run
+setCameraView('default');
+updateCurves();
+animate(0);
 
 window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
