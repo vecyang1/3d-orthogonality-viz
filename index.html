@@ -37,20 +37,58 @@
             <input type="range" id="f2-range" min="1" max="15" step="0.5" value="3.0">
           </div>
 
-          <!-- Presets -->
-          <div class="preset-grid">
-            <button class="preset-btn active" id="view-3d">Free 3D</button>
-            <button class="preset-btn" id="view-top">Top Plane</button>
-            <button class="preset-btn" id="view-f1">F1 Iso</button>
-            <button class="preset-btn" id="view-f2">F2 Iso</button>
-            <button class="preset-btn" id="view-xy">Lissajous</button>
-            <button class="preset-btn" id="view-iso">Ortho</button>
+          <!-- Teaching Scenarios -->
+          <div class="control-group">
+            <div class="group-title">教学场景演示 (Scenarios)</div>
+            <div class="preset-grid scenarios">
+              <button class="scenario-btn recommended" id="scene-fdm">
+                <span class="icon">📡</span>
+                <span class="text">频分正交<br><small>FDM (Different Freq)</small></span>
+              </button>
+              <button class="scenario-btn warning" id="scene-bad">
+                <span class="icon">💥</span>
+                <span class="text">信号碰撞<br><small>Collision (Same Freq)</small></span>
+              </button>
+              <button class="scenario-btn magic" id="scene-iq">
+                <span class="icon">✨</span>
+                <span class="text">I/Q 正交<br><small>Quadrature (Phase 90°)</small></span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Camera Views -->
+          <div class="control-group">
+            <div class="group-title">相机视角 (Camera Views)</div>
+            <div class="preset-grid">
+              <button class="preset-btn active" id="view-3d">Free 3D</button>
+              <button class="preset-btn" id="view-top">Top Plane</button>
+              <button class="preset-btn" id="view-f1">F1 Iso</button>
+              <button class="preset-btn" id="view-f2">F2 Iso</button>
+              <button class="preset-btn" id="view-xy">Lissajous</button>
+              <button class="preset-btn" id="view-iso">Ortho</button>
+            </div>
           </div>
 
           <!-- Tutorial -->
           <div class="tutorial-container">
             <div id="tut-title">系统就绪</div>
             <div id="tut-text">调节滑块观察频率在空间的垂直投影。</div>
+          </div>
+
+          <div class="control-item">
+            <div class="label-row">
+              <span>Phase Shift (φ)</span>
+              <span id="phase-val">0°</span>
+            </div>
+            <input type="range" id="phase-range" min="0" max="360" step="5" value="0">
+          </div>
+
+          <!-- Visibility Controls -->
+          <div class="control-item">
+            <div class="label-row" style="cursor: pointer;">
+              <span>显示合成信号 (3D Path)</span>
+              <input type="checkbox" id="show-sum" checked style="width: 20px; height: 20px;">
+            </div>
           </div>
 
           <!-- Audio Toggle -->
