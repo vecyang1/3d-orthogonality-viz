@@ -76,32 +76,58 @@ p {
 }
 
 .preset-group {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 0.5rem;
   margin-bottom: 1rem;
 }
 
 .preset-btn {
-  flex: 1;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: white;
-  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #a3b3bc;
+  padding: 0.6rem 0.4rem;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 0.75rem;
-  transition: all 0.2s ease;
+  font-size: 0.7rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  text-align: center;
 }
 
 .preset-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: #00ff87;
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: white;
 }
 
 .preset-btn.active {
-  background: #00ff87;
-  color: #0d1117;
+  background: linear-gradient(135deg, rgba(0, 255, 135, 0.2), rgba(96, 239, 255, 0.2));
+  color: #00ff87;
   border-color: #00ff87;
+  box-shadow: 0 0 15px rgba(0, 255, 135, 0.2);
+}
+
+.tutorial-box {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  border-left: 4px solid #60efff;
+}
+
+.tutorial-title {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #60efff;
+  margin-bottom: 0.4rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.tutorial-text {
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: #d1d9e0;
 }
 
 .control-group {
